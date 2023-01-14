@@ -1,8 +1,8 @@
-BACKGROUND
+## BACKGROUND
 
 Craigslist is an open platform used for posting classified advertisements. These advertisements can be related to products, properties, skills, jobs or even discussions. One such scope of work covered on Craigslist is Job advertisement. The job listings on Craigslist do not follow a particular structure. Upon visiting the website, the users can only see the broad category of the job, date, title, and location. There is no specific information about the niche category of job posting, employment type, compensation, or organisation available. This means that the users need to visit each posting individually to find a job posting that suits him. This lack of structure of job postings makes it less popular than other widely used websites like indeed.com. The recruiters often end up posting the same ad twice with the exact same description which does not lead to any better response rate from candidates; this ultimately leads to driving the traffic away from the website.   
 
-PROJECT OBJECTIVE
+## PROJECT OBJECTIVE
 
 We aim to use the methods for handling unstructured data that is scraped from Craigslist, extract relevant contents from it and classify it into each of its niche sub-categories. Further, we will provide recommendations to the recruiter to add features (in case they have missed it) which could possibly enhance the conversion rate of the ad posting. 
 
@@ -20,16 +20,16 @@ Example:
 
 Here, there are jobs related to food like “Cooks wanted” or “Pizza maker”, but a person searching for a specific job he has experience in like sous-chef at a pizzeria, or a specific cuisine specialist cook may find it hard to search for jobs, requiring them to click into each posting to get more related information. Thus, we can apply filtering according to the data present inside and categorise them to make it easier for the user to find a desirable posting.
 
-DATA ANALYSIS / METHODOLOGY:
+## DATA ANALYSIS / METHODOLOGY:
 
-Data scraping:
+### Data scraping:
 
 Data has been scraped from Craigslist using Selenium and BeautifulSoup. The program iterated through all the links in the Restaurants and Education categories for many cities and scraped the job descriptions from each link. One of the major constraints faced was scraping large amount of data at once from the website, as repeated efforts caused temporarily blockage from Craigslist. We were able to scrape 683 data rows from Education and 1464 data rows from Restaurants.
 
  
 Fig: Scraped data for ‘education’ category
 
-Data cleaning:
+### Data cleaning:
 
 The data scraped in both categories had to be cleaned and pre-processed to conduct our analyses. The first step in that was to drop duplicate rows from the dataset. Following this, we tokenized job descriptions and removed punctuation associated with words after tokenization. For example, “job” and “job.” would be treated as different tokens, skewing our analysis. Hence, removing punctuation to equalize the tokens in our data was necessary. Next, we removed all html tags and stop-words. To improve accuracy of the model, we also created a list of high frequency words irrelevant to our categorization and removed them from the dataset. The cleaned data was then lemmatized for further analyses and added as a column to our dataset. 
 
@@ -40,9 +40,10 @@ Fig: Cleaned and lemmatized data for ‘education’ category
 Fig: Cleaned and lemmatized data for ‘Food/Beverage/Hospitality’ category
 
 
-MODELING AND TRAINING
+## MODELING AND TRAINING
 
-TOPIC MODELING ALGORITHMS USED:
+### TOPIC MODELING ALGORITHMS USED:
+
 K-Means Clustering: K-means clustering divides observations into k clusters by minimizing distances between the data points within a cluster and maximizing distances between data points between different clusters. A similarity measure such as Euclidean-based distance or correlation-based distance is used to find homogeneous subgroups within the data. Different applications require different similarity measures.
 
 Latent Dirichlet Allocation (LDA): The LDA algorithm is one of the most famous topic modeling algorithms. It is a three-level hierarchical Bayesian model in which each item in a collection is represented as a finite mixture of topics. Topic probabilities are modeled as an infinite mixture over each topic. An explicit representation of a document is provided by topic probabilities in text modeling.
@@ -50,7 +51,7 @@ Non-negative Matrix Factorization (NMF): A non-negative matrix, X, is factorized
 
 Hierarchical Dirichlet Process (HDP): In Hierarchical Dirichlet process (HDP) is a nonparametric Bayesian approach to clustering grouped data using statistics and machine learning concepts. For each group of data, a Dirichlet Process is used, with the Dirichlet processes for each group sharing a base distribution that itself is derived from a Dirichlet Process. Groups can share statistical strength by sharing clusters across groups. The HDP is an extension of LDA, designed to deal with cases where the number of mixture components (the number of "topics" in document-modeling terms) is unknown. As a result, both methods produce different results.
 
-Topic modeling in our Project: 
+### Topic modeling in our Project: 
 
 Two different models were built simultaneously to tackle the data in the two different categories. We start the modelling by performing a k-means clustering to identify the number of topics that can be utilized for an effective topic modelling. For this, we first convert the cleaned data into a tf-idf vector and compute the ideal number of clusters for the k-means algorithm.
 
@@ -71,7 +72,7 @@ LDA and HDP algorithms were used to recognize topics in our project for both cat
 Fig 1: Coherence score for HDP and LDA models 
 for education category
 
-CLASSFICATION MODELS
+## CLASSFICATION MODELS
  
 The data in each category is split into a training dataset, which utilizes 75% of the data, and the remaining 25% data is used as test data. The former is used to train different models, while the latter helps evaluate the models built. For each category, we choose the model, providing us with the highest accuracy in correctly recommending words potentially missed in the job description but are like the dominant topic of that data.
  
@@ -83,7 +84,7 @@ We used the following algorithms to build the different models in our project:
 ·	Decision Tree: Decision trees are a non-parametric supervised learning method used for classification and regression. The goal is to create a model that predicts the value of a target variable by learning simple decision rules inferred from the data features. A tree can be seen as a piecewise constant approximation.
 ·	BERT: BERT (Bidirectional Encoder Representations from Transformers) is an encoder developed by researchers at Google AI Language. As opposed to directional models, which read the text input sequentially (left-to-right or right-to-left), the Transformer encoder reads the entire sequence of words at once, which makes it bidirectional. This characteristic allows the model to learn the context of a word based on all its surroundings (left and right of the word). Thus, it helps to capture semantic meaning of a word unlike other naïve encoders. There are various pre-trained models available, for our requirement we used ‘bert-base-uncased’, which uses masked language modelling and works well when the data is case insensitive. Job descriptions being case insensitive we opted for this model.
 
-MODEL VALIDATION
+## MODEL VALIDATION
 
 
 
@@ -123,7 +124,7 @@ The data of both categories was used to train the different models. Post-trainin
 
 BERT model gave an accuracy of ~59% for the education section and ~70% for the food/beverage and hospitality section.
 
-		RECOMMENDATIONS TO RECRUITERS
+## 		RECOMMENDATIONS TO RECRUITERS
 
 Apart from classifying the job description into various topics, its contents can be cross referenced against the top keywords occurring in both the cluster to which it belongs to, as well as the topic it got assigned to in the top modelling exercise. If the keywords do not appear anywhere in the job description, the job poster can be nudged to include the same so that it improves the success of the job posting.
 
@@ -135,14 +136,13 @@ In the above case for the above topic the words [hour, work, please] are common 
 
 
 
-		CONCLUSION
+## 		CONCLUSION
 
 We believe that implementing this model will be helpful to Craigslist, impacting both employers as well as jobseekers. Since jobseekers will have an easier time navigating the platform and extracting relevant information without even clicking on a link, they will be able to browse through a larger number of jobs. If the job matches their criteria, they can then seek further details by clicking into the full post. In the current scenario, they need to click on all the links to find details and then decide, leading to many missed opportunities. Increased interest from jobseekers will encourage more employers to post jobs, thus perpetuating a cycle of growth. 
 
 Currently, recruiters who post available jobs on Craigslist are not sure how to structure their job descriptions, nor are they clear on how to word it to catch a potential employee’s attention. Keywork recommendations will help companies optimise their job postings by improving each posting’s efficiency in falling into a certain professional subcategory while also aiding jobseekers in finding that job.
 
-FUTURE SCOPE
+## FUTURE SCOPE
 
 The model can be improved even further if we are able to provide tags based upon the generated labels. We can also add tags for Employment Type, Salary etc. With more granulated data, the need to navigate through multiple pages will reduce to just glancing at the search results and filtering out the ones that don’t fit the needs of the user. The advanced model can use our current model for its underlying logic. These steps will help Craigslist be a competitive and modern job board able to compete with more formal sites like Indeed and LinkedIn. 
  
-![image](https://user-images.githubusercontent.com/28756098/212490955-7157f2d7-4bac-4ba8-a9d5-1e5381d4ac4e.png)
